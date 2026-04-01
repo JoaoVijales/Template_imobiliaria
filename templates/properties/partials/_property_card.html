@@ -1,0 +1,109 @@
+{# Usage: {% include 'properties/partials/_property_card.html' with property=prop %} #}
+<article class="property-card group bg-white rounded-2xl shadow-md overflow-hidden hover:scale-105 hover:shadow-xl transition-all duration-300 flex flex-col">
+
+  {# ── Image area ─────────────────────────────────────────────────────────── #}
+  <div class="relative overflow-hidden aspect-[4/3]">
+    {% if property.main_image %}
+      <img
+        src="{{ property.main_image.image.url }}"
+        alt="{{ property.main_image.caption|default:property.title }}"
+        class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 lazy-img"
+        loading="lazy"
+      >
+    {% else %}
+      <div class="w-full h-full bg-gradient-to-br from-amber-50 to-amber-100 flex items-center justify-center">
+        {# House placeholder SVG #}
+        <svg class="w-20 h-20 text-amber-300" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
+                d="M3 9.75L12 3l9 6.75V21a.75.75 0 01-.75.75H15.75a.75.75 0 01-.75-.75v-4.5a.75.75 0 00-.75-.75h-4.5a.75.75 0 00-.75.75V21a.75.75 0 01-.75.75H3.75A.75.75 0 013 21V9.75z" />
+        </svg>
+      </div>
+    {% endif %}
+
+    {# Listing-type badge (top-right) #}
+    <span class="absolute top-3 right-3 px-3 py-1 rounded-full text-xs font-semibold uppercase tracking-wide shadow
+      {% if property.listing_type == 'sale' %}
+        bg-emerald-500 text-white
+      {% else %}
+        bg-blue-500 text-white
+      {% endif %}
+    ">
+      {{ property.get_listing_type_display }}
+    </span>
+
+    {# Property-type badge (bottom-left) #}
+    <span class="absolute bottom-3 left-3 px-3 py-1 rounded-full text-xs font-medium bg-black/50 text-white backdrop-blur-sm">
+      {{ property.get_property_type_display }}
+    </span>
+  </div>
+
+  {# ── Card body ───────────────────────────────────────────────────────────── #}
+  <div class="flex flex-col flex-1 p-5 gap-3">
+
+    {# Price #}
+    <p class="text-2xl font-bold text-amber-600 font-price tracking-tight">
+      R$&nbsp;{{ property.price|floatformat:0 }}
+    </p>
+
+    {# Title #}
+    <h3 class="text-gray-800 font-semibold text-base leading-snug line-clamp-2" title="{{ property.title }}">
+      {{ property.title }}
+    </h3>
+
+    {# Location #}
+    <p class="text-gray-500 text-sm flex items-center gap-1">
+      {# Map-pin icon #}
+      <svg class="w-4 h-4 text-amber-400 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+              d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+              d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+      </svg>
+      <span class="truncate">{{ property.city }}, {{ property.state }}</span>
+    </p>
+
+    {# Divider #}
+    <hr class="border-gray-100">
+
+    {# Features icons row #}
+    <div class="flex items-center justify-between text-gray-600 text-sm">
+
+      {# Bedrooms #}
+      <span class="flex items-center gap-1" title="{{ property.bedrooms }} quartos">
+        <svg class="w-4 h-4 text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8"
+                d="M3 12V7a1 1 0 011-1h4a1 1 0 011 1v1m0 0h8V7a1 1 0 011-1h4a1 1 0 011 1v5M3 12h18M3 12v6m18-6v6M3 18h18" />
+        </svg>
+        <span>{{ property.bedrooms }}</span>
+      </span>
+
+      {# Bathrooms #}
+      <span class="flex items-center gap-1" title="{{ property.bathrooms }} banheiros">
+        <svg class="w-4 h-4 text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8"
+                d="M6 3v9m0 0a6 6 0 006 6h0a6 6 0 006-6V9H6zm0 0H3m3 0h14" />
+        </svg>
+        <span>{{ property.bathrooms }}</span>
+      </span>
+
+      {# Area #}
+      <span class="flex items-center gap-1" title="{{ property.area }} m²">
+        <svg class="w-4 h-4 text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8"
+                d="M4 8V4m0 0h4M4 4l5 5m11-5h-4m4 0v4m0-4l-5 5M4 16v4m0 0h4m-4 0l5-5m11 5l-5-5m5 5v-4m0 4h-4" />
+        </svg>
+        <span>{{ property.area|floatformat:0 }}&nbsp;m²</span>
+      </span>
+
+    </div>
+
+    {# CTA button #}
+    <a
+      href="{{ property.get_absolute_url }}"
+      class="mt-auto block w-full text-center bg-amber-500 hover:bg-amber-600 active:bg-amber-700 text-white font-semibold py-2.5 px-4 rounded-xl transition-colors duration-200 text-sm"
+    >
+      Ver Detalhes
+    </a>
+
+  </div>
+</article>
