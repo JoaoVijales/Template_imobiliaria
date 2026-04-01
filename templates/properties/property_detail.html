@@ -1,0 +1,36 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ property.title }} | Imobiliária{% endblock %}
+
+{% block content %}
+<div class="container mx-auto px-4 py-10">
+  <h1 class="text-3xl font-bold mb-4">{{ property.title }}</h1>
+  <p class="mb-2">{{ property.description }}</p>
+  <p class="mb-2">Preço: R$ {{ property.price }}</p>
+  <p class="mb-2">Cidade: {{ property.city }} / {{ property.state }}</p>
+  <p class="mb-2">Quartos: {{ property.bedrooms }}</p>
+  <p class="mb-2">Banheiros: {{ property.bathrooms }}</p>
+  <p class="mb-2">Vagas: {{ property.parking_spots }}</p>
+  <p class="mb-2">Área: {{ property.area }} m²</p>
+  <p class="mb-2">Tipo: {{ property.get_property_type_display }}</p>
+  <p class="mb-2">Anúncio: {{ property.get_listing_type_display }}</p>
+
+  <section class="mt-8">
+    <h2 class="text-xl font-semibold mb-4">Entre em Contato</h2>
+    <form method="post">
+      {% csrf_token %}
+      {{ inquiry_form.as_p }}
+      <button type="submit" class="mt-4 bg-amber-500 text-white px-6 py-2 rounded">Enviar</button>
+    </form>
+  </section>
+
+  {% if similar_properties %}
+  <section class="mt-10">
+    <h2 class="text-xl font-semibold mb-4">Imóveis Similares</h2>
+    {% for prop in similar_properties %}
+      <p><a href="{{ prop.get_absolute_url }}">{{ prop.title }}</a></p>
+    {% endfor %}
+  </section>
+  {% endif %}
+</div>
+{% endblock %}
