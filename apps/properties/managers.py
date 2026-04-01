@@ -62,3 +62,7 @@ class PropertyManager(models.Manager):
     def by_type(self, property_type: str) -> PropertyQuerySet:
         """Filter properties by property type."""
         return self.get_queryset().by_type(property_type)
+
+    def with_images(self) -> PropertyQuerySet:
+        """Prefetch related images to avoid N+1 queries."""
+        return self.get_queryset().with_images()
