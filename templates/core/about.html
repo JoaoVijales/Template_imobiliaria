@@ -100,11 +100,18 @@
           </div>
           <h3 class="font-serif text-lg font-bold text-dark mb-2">Nossos Valores</h3>
           <div class="grid grid-cols-2 gap-2 mt-3">
-            {% for value in "Transparência,Ética,Compromisso,Inovação,Respeito,Excelência"|split:"," %}
+            {% for value in valores %}
             <div class="flex items-center gap-2 text-sm text-gray-600">
               <span class="w-1.5 h-1.5 rounded-full bg-primary-500 flex-shrink-0"></span>
               {{ value }}
             </div>
+            {% empty %}
+            <div class="flex items-center gap-2 text-sm text-gray-600"><span class="w-1.5 h-1.5 rounded-full bg-primary-500 flex-shrink-0"></span>Transparência</div>
+            <div class="flex items-center gap-2 text-sm text-gray-600"><span class="w-1.5 h-1.5 rounded-full bg-primary-500 flex-shrink-0"></span>Ética</div>
+            <div class="flex items-center gap-2 text-sm text-gray-600"><span class="w-1.5 h-1.5 rounded-full bg-primary-500 flex-shrink-0"></span>Compromisso</div>
+            <div class="flex items-center gap-2 text-sm text-gray-600"><span class="w-1.5 h-1.5 rounded-full bg-primary-500 flex-shrink-0"></span>Inovação</div>
+            <div class="flex items-center gap-2 text-sm text-gray-600"><span class="w-1.5 h-1.5 rounded-full bg-primary-500 flex-shrink-0"></span>Respeito</div>
+            <div class="flex items-center gap-2 text-sm text-gray-600"><span class="w-1.5 h-1.5 rounded-full bg-primary-500 flex-shrink-0"></span>Excelência</div>
             {% endfor %}
           </div>
         </div>
@@ -156,26 +163,18 @@
 
     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
 
-      {% with team_members="Ana Costa,Carlos Melo,Beatriz Lima,Rafael Santos"|split:"," %}
-      {% with team_roles="Diretora Comercial,Corretor Sênior,Especialista Residencial,Consultor de Investimentos"|split:"," %}
-      {% for member in team_members %}
+      {% for member in team %}
       <div class="bg-white rounded-2xl overflow-hidden shadow-card hover:shadow-card-hover transition-shadow group text-center">
-        {# Avatar placeholder #}
-        <div class="h-48 bg-gradient-to-br
-          {% cycle 'from-primary-100 to-primary-200' 'from-blue-100 to-blue-200' 'from-amber-100 to-amber-200' 'from-teal-100 to-teal-200' %}
-          flex items-center justify-center">
+        <div class="h-48 flex items-center justify-center
+          {% cycle 'bg-gradient-to-br from-primary-100 to-primary-200' 'bg-gradient-to-br from-blue-100 to-blue-200' 'bg-gradient-to-br from-amber-100 to-amber-200' 'bg-gradient-to-br from-teal-100 to-teal-200' %}">
           <span class="font-serif text-5xl font-bold
             {% cycle 'text-primary-500' 'text-blue-500' 'text-amber-600' 'text-teal-600' %}">
-            {{ member|slice:":1" }}
+            {{ member.name|slice:":1" }}
           </span>
         </div>
         <div class="p-5">
-          <h3 class="font-serif text-lg font-bold text-dark">{{ member }}</h3>
-          <p class="text-primary-600 text-xs font-semibold mt-1 mb-4">
-            {% with roles=team_roles|split:"," %}
-              {% for role in roles %}{% if forloop.counter == forloop.parentloop.counter %}{{ role }}{% endif %}{% endfor %}
-            {% endwith %}
-          </p>
+          <h3 class="font-serif text-lg font-bold text-dark">{{ member.name }}</h3>
+          <p class="text-primary-600 text-xs font-semibold mt-1 mb-4">{{ member.role }}</p>
           <div class="flex gap-2 justify-center">
             <a href="{% url 'core:contact' %}"
                class="flex-1 px-3 py-2 bg-primary-50 hover:bg-primary-100 text-primary-700 text-xs font-semibold rounded-lg transition">
@@ -184,9 +183,15 @@
           </div>
         </div>
       </div>
+      {% empty %}
+      {# Fallback estático se nenhum membro for passado no contexto #}
+      {% for member in default_team %}
+      <div class="bg-white rounded-2xl overflow-hidden shadow-card text-center p-5">
+        <h3 class="font-serif text-lg font-bold text-dark">{{ member.name }}</h3>
+        <p class="text-primary-600 text-xs font-semibold mt-1">{{ member.role }}</p>
+      </div>
       {% endfor %}
-      {% endwith %}
-      {% endwith %}
+      {% endfor %}
 
     </div>
   </div>

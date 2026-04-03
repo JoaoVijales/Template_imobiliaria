@@ -19,8 +19,21 @@ class HomeView(TemplateView):
         return context
 
 
+_TEAM = [
+    {'name': 'Ana Costa',      'role': 'Diretora Comercial'},
+    {'name': 'Carlos Melo',    'role': 'Corretor Sênior'},
+    {'name': 'Beatriz Lima',   'role': 'Especialista Residencial'},
+    {'name': 'Rafael Santos',  'role': 'Consultor de Investimentos'},
+]
+
+
 class AboutView(TemplateView):
     template_name = 'core/about.html'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['team'] = _TEAM
+        return context
 
 
 class ContactView(FormView):
