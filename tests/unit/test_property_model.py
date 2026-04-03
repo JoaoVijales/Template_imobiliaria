@@ -13,6 +13,17 @@ from tests.fixtures.factories import (
     PropertyInquiryFactory,
 )
 
+_COMMON_PROPERTY_KWARGS = {
+    'description': 'Descrição do imóvel',
+    'property_type': PropertyType.HOUSE,
+    'listing_type': ListingType.SALE,
+    'price': Decimal('300000.00'),
+    'area': Decimal('100.00'),
+    'address': 'Rua Teste, 10',
+    'city': 'Curitiba',
+    'state': 'PR',
+}
+
 
 # ---------------------------------------------------------------------------
 # TestPropertyModel
@@ -118,6 +129,41 @@ class TestPropertyModel:
         prop = PropertyFactory(title='Loft Moderno')
         image = PropertyImageFactory(property=prop, order=0)
         assert 'Loft Moderno' in str(image)
+
+    @pytest.mark.django_db
+    def test_should_deduplicate_slug_with_counter_when_slug_already_exists(self):
+        """When two properties share the same base slug, the second gets a '-1' suffix."""
+        # Create first property with a known slug to prime the collision
+        prop1 = Property.objects.create(
+            title='Casa Bela',
+            slug='casa-bela',
+            **_COMMON_PROPERTY_KWARGS,
+        )
+
+        # Create a second property with no slug — auto-generation should detect collision
+        # and append '-1'
+        prop2 = Property.objects.create(
+            title='Casa Bela',
+            slug='',
+            **_COMMON_PROPERTY_KWARGS,
+        )
+
+        assert prop2.slug != prop1.slug
+        assert prop2.slug == 'casa-bela-1'
+
+    @pytest.mark.django_db
+    def test_should_increment_counter_until_unique_slug_found(self):
+        """Deduplication counter keeps incrementing until a free slot is found."""
+        base_kwargs = {**_COMMON_PROPERTY_KWARGS}
+
+        # Occupy 'casa-teste', 'casa-teste-1', 'casa-teste-2'
+        Property.objects.create(title='Casa Teste', slug='casa-teste', **base_kwargs)
+        Property.objects.create(title='Casa Teste', slug='casa-teste-1', **base_kwargs)
+        Property.objects.create(title='Casa Teste', slug='casa-teste-2', **base_kwargs)
+
+        # Next auto-generated slug should land on 'casa-teste-3'
+        prop = Property.objects.create(title='Casa Teste', slug='', **base_kwargs)
+        assert prop.slug == 'casa-teste-3'
 
 
 # ---------------------------------------------------------------------------
