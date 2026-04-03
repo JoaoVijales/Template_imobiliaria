@@ -1,0 +1,115 @@
+/* ============================================================
+   ImóvelPrime — Admin CSS (Jazzmin overrides)
+   Alinha o visual do painel admin com o frontend do site.
+   ============================================================ */
+
+/* ── Sidebar ─────────────────────────────────────────────────── */
+.main-sidebar,
+.main-sidebar .sidebar {
+    background: linear-gradient(180deg, #1a1a2e 0%, #16213e 100%) !important;
+}
+
+.brand-link {
+    background: #d97706 !important;
+    border-bottom: 1px solid #b45309 !important;
+}
+
+.brand-link:hover {
+    background: #b45309 !important;
+}
+
+.brand-link .brand-text {
+    font-weight: 700;
+    letter-spacing: 0.025em;
+}
+
+/* ── Nav items ───────────────────────────────────────────────── */
+.sidebar-dark-primary .nav-sidebar > .nav-item > .nav-link.active {
+    background: rgba(217,119,6,.2) !important;
+    color: #fbbf24 !important;
+    border-left: 3px solid #d97706;
+}
+
+.sidebar-dark-primary .nav-sidebar > .nav-item > .nav-link:hover {
+    background: rgba(217,119,6,.12) !important;
+    color: #fde68a !important;
+}
+
+.nav-sidebar .nav-item > .nav-link {
+    border-left: 3px solid transparent;
+    transition: all 0.2s ease;
+}
+
+/* ── Top navbar ──────────────────────────────────────────────── */
+.main-header.navbar {
+    background: #1a1a2e !important;
+    border-bottom: 2px solid #d97706 !important;
+}
+
+.navbar-dark .navbar-nav .nav-link {
+    color: rgba(255,255,255,.8) !important;
+}
+
+.navbar-dark .navbar-nav .nav-link:hover {
+    color: #fbbf24 !important;
+}
+
+/* ── Buttons ─────────────────────────────────────────────────── */
+.btn-primary {
+    background-color: #d97706 !important;
+    border-color: #b45309 !important;
+}
+
+.btn-primary:hover,
+.btn-primary:focus {
+    background-color: #b45309 !important;
+    border-color: #92400e !important;
+}
+
+/* ── Cards & panels ──────────────────────────────────────────── */
+.card-header {
+    background: linear-gradient(135deg, #1a1a2e, #16213e) !important;
+    color: #fbbf24 !important;
+    border-bottom: 1px solid #d97706 !important;
+    font-weight: 600;
+}
+
+.card {
+    border: none;
+    box-shadow: 0 2px 12px rgba(0,0,0,.08);
+    border-radius: 0.75rem;
+    overflow: hidden;
+}
+
+/* ── Tables ──────────────────────────────────────────────────── */
+.table-hover tbody tr:hover {
+    background-color: rgba(217,119,6,.05) !important;
+}
+
+th { color: #374151; font-size: 0.8rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; }
+
+/* ── Boolean field icons ─────────────────────────────────────── */
+.field-is_featured .yes-icon,
+.field-is_active .yes-icon {
+    color: #d97706 !important;
+}
+
+/* ── Inline admin ────────────────────────────────────────────── */
+.inline-group .tabular td,
+.inline-group .tabular th {
+    vertical-align: middle;
+}
+
+/* ── Form labels ─────────────────────────────────────────────── */
+.required-question > label::after {
+    content: ' *';
+    color: #d97706;
+}
+
+/* ── Footer ──────────────────────────────────────────────────── */
+.main-footer {
+    background: #1a1a2e !important;
+    color: rgba(255,255,255,.5) !important;
+    border-top: 1px solid #d97706 !important;
+    font-size: 0.8rem;
+}
