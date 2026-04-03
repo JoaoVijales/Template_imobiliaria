@@ -1,0 +1,67 @@
+[project]
+name = "template-imobiliaria"
+version = "0.1.0"
+description = "Template de site para imobiliária com Django e painel admin personalizado"
+requires-python = ">=3.11"
+dependencies = [
+    "django==4.2.9",
+    "pillow==10.2.0",
+    "django-jazzmin==2.6.0",
+    "django-filter==23.5",
+    "django-environ==0.11.2",
+    "whitenoise==6.6.0",
+    "gunicorn==21.2.0",
+    "psycopg2-binary==2.9.9",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest==7.4.4",
+    "pytest-django==4.7.0",
+    "pytest-cov==4.1.0",
+    "factory-boy==3.3.0",
+    "faker==22.2.0",
+    "black==24.1.1",
+    "isort==5.13.2",
+    "flake8==7.0.0",
+    "bandit==1.7.7",
+]
+
+[tool.uv]
+dev-dependencies = [
+    "pytest==7.4.4",
+    "pytest-django==4.7.0",
+    "pytest-cov==4.1.0",
+    "factory-boy==3.3.0",
+    "faker==22.2.0",
+    "black==24.1.1",
+    "isort==5.13.2",
+    "flake8==7.0.0",
+    "bandit==1.7.7",
+]
+
+[tool.black]
+line-length = 88
+target-version = ["py311"]
+
+[tool.isort]
+profile = "black"
+known_django = "django"
+known_first_party = ["apps", "config"]
+sections = ["FUTURE", "STDLIB", "THIRDPARTY", "DJANGO", "FIRSTPARTY", "LOCALFOLDER"]
+
+[tool.pytest.ini_options]
+DJANGO_SETTINGS_MODULE = "config.settings.development"
+python_files = ["tests.py", "test_*.py", "*_test.py"]
+python_classes = ["Test*"]
+python_functions = ["test_*"]
+addopts = "--tb=short -v"
+
+[tool.coverage.run]
+source = ["apps"]
+omit = ["*/migrations/*", "*/tests/*"]
+
+[tool.coverage.report]
+show_missing = true
+skip_covered = false
+fail_under = 95
