@@ -11,9 +11,9 @@ urlpatterns = [
     # Admin
     path("admin/", admin.site.urls),
     # Core app (home, about, contact, etc.)
-    path("", include("apps.core.urls")),
+    path("", include(("apps.core.urls", "core"))),
     # Properties app (listings, detail, search, etc.)
-    path("imoveis/", include("apps.properties.urls")),
+    path("imoveis/", include(("apps.properties.urls", "properties"))),
 ]
 
 # Serve media files in development

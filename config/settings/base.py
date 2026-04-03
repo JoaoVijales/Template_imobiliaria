@@ -54,6 +54,7 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
     # Third-party
     "django_filters",
+    "django.contrib.humanize",
     # Local apps
     "apps.core",
     "apps.properties",
@@ -193,7 +194,7 @@ JAZZMIN_SETTINGS = {
     # ---- Related modal ----
     "related_modal_active": True,
     # ---- UI customisation ----
-    "custom_css": None,
+    "custom_css": "css/admin_custom.css",
     "custom_js": None,
     "use_google_fonts_cdn": True,
     "show_ui_builder": False,
@@ -212,15 +213,15 @@ JAZZMIN_UI_TWEAKS = {
     "footer_small_text": False,
     "body_small_text": False,
     "brand_small_text": False,
-    "brand_colour": "navbar-success",
-    "accent": "accent-teal",
+    "brand_colour": "navbar-warning",
+    "accent": "accent-warning",
     "navbar": "navbar-dark",
-    "no_navbar_border": False,
+    "no_navbar_border": True,
     "navbar_fixed": True,
     "layout_boxed": False,
     "footer_fixed": False,
     "sidebar_fixed": True,
-    "sidebar": "sidebar-dark-success",
+    "sidebar": "sidebar-dark-warning",
     "sidebar_nav_small_text": False,
     "sidebar_disable_expand": False,
     "sidebar_nav_child_indent": True,
