@@ -44,14 +44,16 @@ class PropertyService:
 
         If a free-text query ('q') is present in filters it is applied first;
         remaining filter keys are then applied on top of the search results.
+        A copy of the filters dict is made so the caller's dict is not mutated.
         """
+        filters = dict(filters)
         query = filters.pop('q', None)
 
         if query:
             qs = self._repo.search(query)
-            # Apply remaining filters on top of search results
+            # Apply remaining filters on top of search results via repository
             if filters:
-                qs = self._apply_filters_to_qs(qs, filters)
+                qs = self._repo.get_filtered({**filters, '_base_qs': qs})
             return qs
 
         return self._repo.get_filtered(filters)

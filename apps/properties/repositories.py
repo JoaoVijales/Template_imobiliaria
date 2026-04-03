@@ -1,4 +1,4 @@
-from typing import Optional
+from typing import List, Optional
 
 from django.db.models import Q, QuerySet
 
@@ -18,7 +18,6 @@ class PropertyRepository:
         return (
             Property.objects.active()
             .with_images()
-            .select_related()
         )
 
     def get_featured(self) -> QuerySet:
@@ -41,11 +40,16 @@ class PropertyRepository:
             .first()
         )
 
-    def get_filtered(self, filters: dict) -> QuerySet:
+    def get_filtered(self, filters: dict, base_qs: Optional[QuerySet] = None) -> QuerySet:
         """
         Apply a dictionary of optional filters to the active property queryset.
 
-        Supported keys:
+        Args:
+            filters:  Mapping of filter keys to values (see below).
+            base_qs:  Optional pre-filtered queryset to apply filters on top of.
+                      Defaults to get_all_active() when not provided.
+
+        Supported filter keys:
             listing_type (str)  – 'sale' or 'rent'
             property_type (str) – value from PropertyType choices
             city (str)          – case-insensitive city match
@@ -53,7 +57,7 @@ class PropertyRepository:
             max_price (Decimal) – upper price bound (inclusive)
             min_bedrooms (int)  – minimum number of bedrooms
         """
-        qs = self.get_all_active()
+        qs = base_qs if base_qs is not None else self.get_all_active()
 
         listing_type = filters.get('listing_type')
         if listing_type:
@@ -100,6 +104,15 @@ class PropertyRepository:
                 | Q(neighborhood__icontains=query)
             )
             .distinct()
+        )
+
+    def get_available_cities(self) -> List[str]:
+        """Return a sorted list of distinct city names that have active listings."""
+        return (
+            Property.objects.active()
+            .values_list('city', flat=True)
+            .distinct()
+            .order_by('city')
         )
 
     def get_similar(self, prop: Property, limit: int = 4) -> QuerySet:

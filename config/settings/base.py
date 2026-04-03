@@ -3,13 +3,40 @@ Base Django settings for Imobiliária project.
 Shared across all environments.
 """
 
+import environ
 from pathlib import Path
+
+# ---------------------------------------------------------------------------
+# Environment (base-level env reader for SECRET_KEY fallback)
+# ---------------------------------------------------------------------------
+
+env = environ.Env()
+# Read .env if present; individual environment files will re-read it too
+environ.Env.read_env(Path(__file__).resolve().parent.parent.parent / ".env")
 
 # ---------------------------------------------------------------------------
 # Paths
 # ---------------------------------------------------------------------------
 
 BASE_DIR = Path(__file__).resolve().parent.parent.parent
+
+# ---------------------------------------------------------------------------
+# Security — loaded from environment; safe fallback for local dev only
+# ---------------------------------------------------------------------------
+
+SECRET_KEY = env('SECRET_KEY', default='insecure-dev-key-change-in-production')
+
+# NOTE: DEBUG must be explicitly set in each environment settings file.
+# It is intentionally NOT set here so that a misconfigured deployment
+# cannot accidentally expose debug information.
+
+# ---------------------------------------------------------------------------
+# Security headers (applied in all environments)
+# ---------------------------------------------------------------------------
+
+SECURE_CONTENT_TYPE_NOSNIFF = True
+X_FRAME_OPTIONS = 'DENY'
+CSRF_COOKIE_HTTPONLY = True
 
 # ---------------------------------------------------------------------------
 # Application definition
